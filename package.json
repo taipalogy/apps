@@ -1,0 +1,10 @@
+{
+  "name": "apps",
+  "version": "0.1.0",
+  "description": "Taipa apps",
+  "author": "Taipalogy",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "18.11.18"
+  }
+}
