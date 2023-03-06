@@ -64,7 +64,6 @@ stdin.addListener('data', function (d) {
       const ltrSndPairs = analyze(input);
 
       const bpmf: string[] = [];
-      const precedings: string[] = [];
       if (ltrSndPairs.length == 0) {
         for (const key of keys) {
           if (key === input) {
@@ -77,13 +76,8 @@ stdin.addListener('data', function (d) {
       } else {
         ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
           for (const key of keys) {
-            // console.log('precedings:', precedings, 'key:', key, 'val:', val[0]);
-            // console.log('key of keys:' + key);
-            if (key === pair[0] && precedings.length == 0) {
+            if (key === pair[0]) {
               const arrEntry: string[] = dict[key] || {};
-              // const chrs = arrEntry.join(',');
-              // console.info(chrs);
-              // if (val[1] === TonalSpellingTags.initialConsonant) {
               if (
                 pair[1] === TonalSpellingTags.stopFinalConsonant &&
                 pair[0].length == 1
@@ -91,35 +85,60 @@ stdin.addListener('data', function (d) {
                 // the 4th tone
                 bpmf.push(arrEntry[1]);
               } else if (
-                pair[1] === TonalSpellingTags.vowel &&
-                pair[0] === TonalLetterTags.i &&
                 arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
-                arrPairs[0][0] === TonalLetterTags.s
+                arrPairs[0][0] === TonalLetterTags.c &&
+                pair[1] === TonalSpellingTags.vowel &&
+                pair[0] === TonalLetterTags.i
+              ) {
+                // in case of ci
+                bpmf.pop(); // pop c
+                bpmf.push(dict[TonalLetterTags.c + TonalLetterTags.i][0]);
+                bpmf.push(arrEntry[0]); // push ci
+              } else if (
+                arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
+                arrPairs[0][0] === TonalLetterTags.ch &&
+                pair[1] === TonalSpellingTags.vowel &&
+                pair[0] === TonalLetterTags.i
+              ) {
+                // in case of chi
+                bpmf.pop(); // pop ch
+                bpmf.push(dict[TonalLetterTags.ch + TonalLetterTags.i][0]);
+                bpmf.push(arrEntry[0]); // push chi
+              } else if (
+                arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
+                arrPairs[0][0] === TonalLetterTags.s &&
+                pair[1] === TonalSpellingTags.vowel &&
+                pair[0] === TonalLetterTags.i
               ) {
                 // in case of si
-                bpmf.pop();
+                bpmf.pop(); // pop s
                 bpmf.push(dict[TonalLetterTags.s + TonalLetterTags.i][0]);
-                bpmf.push(arrEntry[0]);
+                bpmf.push(arrEntry[0]); // push si
+              } else if (
+                arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
+                arrPairs[0][0] === TonalLetterTags.j &&
+                pair[1] === TonalSpellingTags.vowel &&
+                pair[0] === TonalLetterTags.i
+              ) {
+                // in case of ji
+                bpmf.pop(); // pop j
+                bpmf.push(dict[TonalLetterTags.j + TonalLetterTags.i][0]);
+                bpmf.push(arrEntry[0]); // push ji
               } else {
                 bpmf.push(arrEntry[0]);
               }
-              if (
-                idx < arrPairs.length - 1 &&
-                arrPairs[idx + 1][1] === TonalSpellingTags.nasalization
-              ) {
-                // in case of the following letter is nasalization
-                // push the vowel
-                precedings.push(pair[0]);
-              }
-            } else if (
-              precedings.length > 0 &&
-              pair[1] === TonalSpellingTags.nasalization
-            ) {
-              // console.log('in Nasalization', 'key:' + key, 'val:' + val[0]);
-              const arrEntry: string[] = dict[precedings[0] + pair[0]] || {};
-              bpmf.pop();
-              bpmf.push(arrEntry[0]);
-              precedings.length = 0;
+            } else if (pair[1] === TonalSpellingTags.nasalization) {
+              // in case of nasalization
+              const vwls: string = ltrSndPairs
+                .map((pair: [string, string]) => {
+                  if (pair[1] === TonalSpellingTags.vowel) {
+                    return pair[0];
+                  }
+                })
+                .join('');
+              const arrEntry: string[] = dict[vwls + pair[0]] || {};
+              bpmf.pop(); // pop vowels
+              bpmf.push(arrEntry[0]); // push nasalized vowels
             }
           }
         });
