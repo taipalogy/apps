@@ -5,7 +5,11 @@ import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
-import { TonalSpellingTags } from '../taipa/src/tonal/tonalres';
+import {
+  lowerLettersTonal,
+  TonalLetterTags,
+  TonalSpellingTags,
+} from '../taipa/src/tonal/tonalres';
 
 import * as fs from 'fs';
 
@@ -86,6 +90,16 @@ stdin.addListener('data', function (d) {
               ) {
                 // the 4th tone
                 bpmf.push(arrEntry[1]);
+              } else if (
+                pair[1] === TonalSpellingTags.vowel &&
+                pair[0] === TonalLetterTags.i &&
+                arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
+                arrPairs[0][0] === TonalLetterTags.s
+              ) {
+                // in case of si
+                bpmf.pop();
+                bpmf.push(dict[TonalLetterTags.s + TonalLetterTags.i][0]);
+                bpmf.push(arrEntry[0]);
               } else {
                 bpmf.push(arrEntry[0]);
               }

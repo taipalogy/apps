@@ -26,12 +26,12 @@ Run the following command line to compile your TypeScript code to JavaScript:
 
 Replace file name in the above commaond line with your implementation. For example:
 
-`tsc -m commonjs -t es2022 --outDir taipa appkana.ts`
+`tsc -m commonjs -t es2022 --outDir taipa kana.ts`
 
-Assuming you have your app `appbpmf.ts` compiled to `appbpmf.js` by runnng the command line:
+Assuming you have your app `bpmf.ts` compiled to `bpmf.js` by runnng the command line:
 
-`tsc -m commonjs -t es2022 --outDir taipa appbpmf.ts`
+`tsc -m commonjs -t es2022 --outDir taipa bpmf.ts`
 
 , and you have your own dictionary stored at `../dictionaries/bopomofo.json`, you can run the following command line to lauch the app:
 
-`node taipa/apps/appbpmf.js ../dictionaries/bopomofo.json`
+`node taipa/apps/bpmf.js ../dictionaries/bopomofo.json`

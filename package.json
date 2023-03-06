@@ -4,6 +4,9 @@
   "description": "Taipa apps",
   "author": "Taipalogy",
   "license": "MIT",
+  "scripts": {
+    "clean": "git clean -fXd -e !node_modules -e !node_modules/**/*"
+  },
   "devDependencies": {
     "@types/node": "18.11.18"
   }
