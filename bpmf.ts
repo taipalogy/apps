@@ -16,14 +16,10 @@ import * as fs from 'fs';
 /**
  * bopomofo
  *
- * > node lib/appbpmf.js
+ * > node path/to/bpmf.js
  */
 
 const stdin = process.openStdin();
-
-// process.argv.forEach(function (val, index, array) {
-//   console.log(index + ': ' + val);
-// });
 
 if (process.argv.length == 3) {
   if (!fs.existsSync(process.argv[2])) {

@@ -3,7 +3,7 @@
 import { Client, TokenAnalysis } from '../taipa/src/client';
 
 /**
- * > node appkana.js
+ * > node path/to/kana.js
  */
 
 const stdin = process.openStdin();
