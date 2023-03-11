@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { Client, TokenAnalysis } from '../taipa/src/client';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';

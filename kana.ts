@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 import { Client, TokenAnalysis } from '../taipa/src/client';
 
 /**
