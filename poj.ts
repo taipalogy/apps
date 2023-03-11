@@ -13,7 +13,7 @@ import * as fs from 'fs';
 // ́: U+0301 Combining Acute Accent
 // ̀: U+0300 Combining Grave Accent
 // ̂: U+0302 Combining Circumflex Accent
-// ¯: U+00AF Macron
+// ̄: U+0304 Combining Macron
 // ͘: U+0358 Combining Dot Above Right
 // ⁿ: U+207F Superscript Latin Small Letter N
 
