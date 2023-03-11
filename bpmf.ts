@@ -4,7 +4,6 @@ import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
 import {
-  lowerLettersTonal,
   TonalLetterTags,
   TonalSpellingTags,
 } from '../taipa/src/tonal/tonalres';
