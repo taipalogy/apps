@@ -49,9 +49,7 @@ stdin.addListener('data', function (d) {
       console.log('File not found');
     } else {
       const input = d.toString().trim();
-      let fileContents = '';
-
-      fileContents = fs.readFileSync(process.argv[2], 'utf-8');
+      const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
       const dict = JSON.parse(fileContents) || {};
       const keys = Object.keys(dict);
       const ltrSndPairs = analyze(input);
