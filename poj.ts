@@ -5,7 +5,10 @@ import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
 
 import * as fs from 'fs';
-import { TonalSpellingTags } from '../taipa/src/tonal/tonalres';
+import {
+  TonalLetterTags,
+  TonalSpellingTags,
+} from '../taipa/src/tonal/tonalres';
 
 /**
  * > node path/to/poj.js
@@ -15,8 +18,10 @@ import { TonalSpellingTags } from '../taipa/src/tonal/tonalres';
 // ̀: U+0300 Combining Grave Accent
 // ̂: U+0302 Combining Circumflex Accent
 // ̄: U+0304 Combining Macron
-// ͘: U+0358 Combining Dot Above Right
+// ̍: U+030D COMBINING VERTICAL LINE ABOVE
 // ⁿ: U+207F Superscript Latin Small Letter N
+// U+0358 COMBINING DOT ABOVE RIGHT
+// U+1D3A MODIFIER LETTER CAPITAL N
 
 const stdin = process.openStdin();
 
@@ -66,7 +71,46 @@ stdin.addListener('data', function (d) {
         ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
           if (keys.includes(pair[0])) {
             const chr: string = dict[pair[0]] || '';
-            poj.push(chr);
+            // const numVowels = ltrSndPairs.filter(
+            //   (pr) => pr[1] === TonalSpellingTags.vowel
+            // ).length;
+            // const numNasalFinals = ltrSndPairs.filter(
+            //   (pr) => pr[1] === TonalSpellingTags.nasalFinalConsonant
+            // ).length;
+            const numTonals = ltrSndPairs.filter(
+              (pr) =>
+                pr[1] === TonalSpellingTags.freeTone ||
+                pr[1] === TonalSpellingTags.checkedTone
+            ).length;
+            if (pair[1] === TonalSpellingTags.vowel && numTonals == 0) {
+              poj.push(chr);
+            } else if (pair[1] === TonalSpellingTags.vowel && numTonals == 1) {
+              if (pair[0] !== TonalLetterTags.o) {
+                poj.push(chr);
+              } else {
+                poj.push(dict[TonalLetterTags.ur]);
+              }
+              const tn = ltrSndPairs
+                .map((pr) => {
+                  if (
+                    pr[1] === TonalSpellingTags.freeTone ||
+                    pr[1] === TonalSpellingTags.checkedTone
+                  ) {
+                    return pr[0];
+                  }
+                })
+                .join('');
+              poj.push(dict[tn]);
+              if (pair[0] === TonalLetterTags.o) {
+                poj.push('\u0358');
+              }
+            } else if (
+              pair[1] === TonalSpellingTags.initialConsonant ||
+              pair[1] === TonalSpellingTags.nasalFinalConsonant ||
+              pair[1] === TonalSpellingTags.stopFinalConsonant
+            ) {
+              poj.push(chr);
+            }
           }
         });
       }
