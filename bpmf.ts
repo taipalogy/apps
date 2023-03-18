@@ -75,8 +75,9 @@ stdin.addListener('data', function (d) {
               // the 4th tone
               bpmf.push(arrEntry[1]);
             } else if (
-              arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[0][0] === TonalLetterTags.c &&
+              idx > 0 &&
+              arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
+              arrPairs[idx - 1][0] === TonalLetterTags.c &&
               pair[1] === TonalSpellingTags.vowel &&
               pair[0] === TonalLetterTags.i
             ) {
@@ -85,8 +86,9 @@ stdin.addListener('data', function (d) {
               bpmf.push(dict[TonalLetterTags.c + TonalLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push ci
             } else if (
-              arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[0][0] === TonalLetterTags.ch &&
+              idx > 0 &&
+              arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
+              arrPairs[idx - 1][0] === TonalLetterTags.ch &&
               pair[1] === TonalSpellingTags.vowel &&
               pair[0] === TonalLetterTags.i
             ) {
@@ -95,8 +97,9 @@ stdin.addListener('data', function (d) {
               bpmf.push(dict[TonalLetterTags.ch + TonalLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push chi
             } else if (
-              arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[0][0] === TonalLetterTags.s &&
+              idx > 0 &&
+              arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
+              arrPairs[idx - 1][0] === TonalLetterTags.s &&
               pair[1] === TonalSpellingTags.vowel &&
               pair[0] === TonalLetterTags.i
             ) {
@@ -105,8 +108,9 @@ stdin.addListener('data', function (d) {
               bpmf.push(dict[TonalLetterTags.s + TonalLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push si
             } else if (
-              arrPairs[0][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[0][0] === TonalLetterTags.j &&
+              idx > 0 &&
+              arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
+              arrPairs[idx - 1][0] === TonalLetterTags.j &&
               pair[1] === TonalSpellingTags.vowel &&
               pair[0] === TonalLetterTags.i
             ) {
@@ -129,9 +133,10 @@ stdin.addListener('data', function (d) {
             const arrEntry: string[] = dict[vwls + pair[0]] || [];
             if (arrEntry.length == 0) {
               if (
-                vwls.length == 2 &&
-                vwls[0] === TonalLetterTags.i &&
-                vwls[1] === TonalLetterTags.a
+                (vwls.length == 2 &&
+                  vwls[0] === TonalLetterTags.i &&
+                  vwls[1] === TonalLetterTags.a) ||
+                (vwls[0] === TonalLetterTags.u && vwls[1] === TonalLetterTags.a)
               ) {
                 arrEntry.push(dict[vwls[1] + pair[0]][0] || '');
               }

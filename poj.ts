@@ -71,13 +71,13 @@ stdin.addListener('data', function (d) {
         ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
           if (keys.includes(pair[0])) {
             const chr: string = dict[pair[0]] || '';
-            // const numVowels = ltrSndPairs.filter(
+            // const numVowels = arrPairs.filter(
             //   (pr) => pr[1] === TonalSpellingTags.vowel
             // ).length;
-            // const numNasalFinals = ltrSndPairs.filter(
+            // const numNasalFinals = arrPairs.filter(
             //   (pr) => pr[1] === TonalSpellingTags.nasalFinalConsonant
             // ).length;
-            const numTonals = ltrSndPairs.filter(
+            const numTonals = arrPairs.filter(
               (pr) =>
                 pr[1] === TonalSpellingTags.freeTone ||
                 pr[1] === TonalSpellingTags.checkedTone
