@@ -5,6 +5,7 @@ import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
 
 import * as fs from 'fs';
+import { TonalSpellingTags } from '../taipa/src/tonal/tonalres';
 
 /**
  * > node path/to/poj.js
@@ -51,25 +52,21 @@ stdin.addListener('data', function (d) {
     } else {
       const input = d.toString().trim();
       const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
-      const dict = JSON.parse(fileContents) || {};
+      const dict = JSON.parse(fileContents) || [];
       const keys = Object.keys(dict);
       const ltrSndPairs = analyze(input);
 
       const poj: string[] = [];
       if (ltrSndPairs.length == 0) {
-        for (const key of keys) {
-          if (key === input) {
-            const chr: string = dict[key];
-            poj.push(chr);
-          }
+        if (keys.includes(input)) {
+          const chr: string = dict[input];
+          poj.push(chr);
         }
       } else {
         ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
-          for (const key of keys) {
-            if (key === pair[0]) {
-              const chr: string = dict[key] || {};
-              poj.push(chr);
-            }
+          if (keys.includes(pair[0])) {
+            const chr: string = dict[pair[0]] || '';
+            poj.push(chr);
           }
         });
       }
