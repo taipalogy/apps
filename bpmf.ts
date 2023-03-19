@@ -123,13 +123,15 @@ stdin.addListener('data', function (d) {
             }
           } else if (pair[1] === TonalSpellingTags.nasalization) {
             // in case of nasalization
-            const vwls: string = ltrSndPairs
-              .map((pair: [string, string]) => {
-                if (pair[1] === TonalSpellingTags.vowel) {
-                  return pair[0];
-                }
-              })
-              .join('');
+
+            const vs: string[] = [];
+            let i = idx - 1;
+            while (i >= 0 && arrPairs[i][1] === TonalSpellingTags.vowel) {
+              vs.unshift(arrPairs[i][0]);
+              i--;
+            }
+
+            const vwls = vs.join('');
             const arrEntry: string[] = dict[vwls + pair[0]] || [];
             if (arrEntry.length == 0) {
               if (
