@@ -143,12 +143,10 @@ stdin.addListener('data', function (d) {
                 arrEntry.push(dict[vwls[1] + pair[0]][0] || '');
               }
             }
-            // console.log(vwls, arrEntry);
 
             bpmf.pop(); // pop vowels
             bpmf.push(arrEntry[0]); // push nasalized vowels
           }
-          // }
         });
       }
 
