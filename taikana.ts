@@ -18,6 +18,6 @@ stdin.addListener('data', function (d) {
     //     })
     //     .map((v) => v.toString() + ' - ' + v.name)
     // );
-    console.info(ta.blockSequences.pop());
+    ta.blockSequences.map((v) => console.info(v));
   }
 });
