@@ -20,8 +20,8 @@ import {
 // ̄: U+0304 Combining Macron
 // ̍: U+030D COMBINING VERTICAL LINE ABOVE
 // ⁿ: U+207F Superscript Latin Small Letter N
-// U+0358 COMBINING DOT ABOVE RIGHT
-// U+1D3A MODIFIER LETTER CAPITAL N
+// ͘: U+0358 COMBINING DOT ABOVE RIGHT
+// ᴺ: U+1D3A MODIFIER LETTER CAPITAL N
 
 const stdin = process.openStdin();
 
@@ -71,36 +71,14 @@ stdin.addListener('data', function (d) {
         ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
           if (keys.includes(pair[0])) {
             const chr: string = dict[pair[0]] || '';
-            // const numVowels = arrPairs.filter(
-            //   (pr) => pr[1] === TonalSpellingTags.vowel
-            // ).length;
-            // const numNasalFinals = arrPairs.filter(
-            //   (pr) => pr[1] === TonalSpellingTags.nasalFinalConsonant
-            // ).length;
-            const numTonals = arrPairs.filter(
-              (pr) =>
-                pr[1] === TonalSpellingTags.freeTone ||
-                pr[1] === TonalSpellingTags.checkedTone
-            ).length;
-            if (pair[1] === TonalSpellingTags.vowel && numTonals == 0) {
-              poj.push(chr);
-            } else if (pair[1] === TonalSpellingTags.vowel && numTonals == 1) {
+
+            if (pair[1] === TonalSpellingTags.vowel) {
               if (pair[0] !== TonalLetterTags.o) {
                 poj.push(chr);
               } else {
                 poj.push(dict[TonalLetterTags.ur]);
               }
-              const tn = ltrSndPairs
-                .map((pr) => {
-                  if (
-                    pr[1] === TonalSpellingTags.freeTone ||
-                    pr[1] === TonalSpellingTags.checkedTone
-                  ) {
-                    return pr[0];
-                  }
-                })
-                .join('');
-              poj.push(dict[tn]);
+
               if (pair[0] === TonalLetterTags.o) {
                 poj.push('\u0358');
               }
@@ -109,6 +87,35 @@ stdin.addListener('data', function (d) {
               pair[1] === TonalSpellingTags.nasalFinalConsonant ||
               pair[1] === TonalSpellingTags.stopFinalConsonant
             ) {
+              poj.push(chr);
+            } else if (
+              pair[1] === TonalSpellingTags.freeTone ||
+              pair[1] === TonalSpellingTags.checkedTone
+            ) {
+              const fs: string[] = [];
+              let i = idx - 1;
+
+              while (
+                i >= 0 &&
+                (arrPairs[i][1] === TonalSpellingTags.nasalFinalConsonant ||
+                  arrPairs[i][1] === TonalSpellingTags.stopFinalConsonant ||
+                  arrPairs[i][1] === TonalSpellingTags.nasalization)
+              ) {
+                fs.unshift(arrPairs[i][0]);
+                poj.pop();
+                console.log(i, arrPairs[i][1], poj, fs);
+                i--;
+              }
+
+              // console.log('>' + poj + '>' + chr + '>' + fs);
+
+              // handle mater lectionis
+              // if(arrPairs[i][1] === TonalSpellingTags.materLectionis){}
+
+              poj.push(chr); // push the tone mark to follow the vowels
+              const fnls = fs.join('');
+              poj.push(fnls); // push the finals
+            } else if (pair[1] === TonalSpellingTags.nasalization) {
               poj.push(chr);
             }
           }
