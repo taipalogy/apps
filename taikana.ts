@@ -11,13 +11,6 @@ stdin.addListener('data', function (d) {
     const cli = new Client();
     const ta: TokenAnalysis = cli.processTonal(d.toString().trim());
 
-    // console.log(
-    //   ta.soundSequences
-    //     .flatMap((v) => {
-    //       return v;
-    //     })
-    //     .map((v) => v.toString() + ' - ' + v.name)
-    // );
     ta.blockSequences.map((v) => console.info(v));
   }
 });
