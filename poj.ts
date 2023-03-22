@@ -92,7 +92,7 @@ stdin.addListener('data', function (d) {
               pair[1] === TonalSpellingTags.freeTone ||
               pair[1] === TonalSpellingTags.checkedTone
             ) {
-              const fs: string[] = [];
+              const fnls: string[] = [];
               let i = idx - 1;
 
               while (
@@ -101,21 +101,42 @@ stdin.addListener('data', function (d) {
                   arrPairs[i][1] === TonalSpellingTags.stopFinalConsonant ||
                   arrPairs[i][1] === TonalSpellingTags.nasalization)
               ) {
-                fs.unshift(arrPairs[i][0]);
+                fnls.unshift(dict[arrPairs[i][0]]);
                 poj.pop();
-                console.log(i, arrPairs[i][1], poj, fs);
+                // console.log(i, arrPairs[i][1], poj, fnls);
                 i--;
               }
 
-              // console.log('>' + poj + '>' + chr + '>' + fs);
+              // console.log('>' + poj + '>' + chr + '>' + fnls);
 
-              // handle mater lectionis
-              // if(arrPairs[i][1] === TonalSpellingTags.materLectionis){}
-
-              poj.push(chr); // push the tone mark to follow the vowels
-              const fnls = fs.join('');
-              poj.push(fnls); // push the finals
+              if (
+                arrPairs[idx - 1][1] === TonalSpellingTags.materLectionis &&
+                arrPairs[idx - 1][0].length == 2
+              ) {
+                // in case of ng, rather than m, n
+                const fl = arrPairs[idx - 1][0].slice(0, 1); // first letter, n
+                const sl = arrPairs[idx - 1][0].slice(1, 2); // second letter, g
+                poj.pop(); // pop ng
+                poj.push(fl); // push n
+                poj.push(chr); // push tone
+                poj.push(sl); // push g
+              } else if (
+                arrPairs[i][1] === TonalSpellingTags.initialConsonant
+              ) {
+                // in case of an initial followed by a nasal final
+                const fl = arrPairs[idx - 1][0].slice(0, 1); // first letter, n
+                const sl = arrPairs[idx - 1][0].slice(1, 2); // second letter, g
+                poj.push(fl); // push n
+                poj.push(chr); // push tone
+                poj.push(sl); // push g
+              } else {
+                poj.push(chr); // push the tone mark to be combined with the vowels
+                poj.push(fnls.join('')); // push the finals
+              }
             } else if (pair[1] === TonalSpellingTags.nasalization) {
+              console.log('>' + poj + '>' + chr);
+              poj.push(chr);
+            } else if (pair[1] === TonalSpellingTags.materLectionis) {
               poj.push(chr);
             }
           }
