@@ -124,6 +124,7 @@ stdin.addListener('data', function (d) {
           } else if (pair[1] === TonalSpellingTags.nasalization) {
             // in case of nasalization
 
+            // get vowels
             const vs: string[] = [];
             let i = idx - 1;
             while (i >= 0 && arrPairs[i][1] === TonalSpellingTags.vowel) {
@@ -132,20 +133,39 @@ stdin.addListener('data', function (d) {
             }
 
             const vwls = vs.join('');
-            const arrEntry: string[] = dict[vwls + pair[0]] || [];
-            if (arrEntry.length == 0) {
-              if (
-                (vwls.length == 2 &&
-                  vwls[0] === TonalLetterTags.i &&
-                  vwls[1] === TonalLetterTags.a) ||
-                (vwls[0] === TonalLetterTags.u && vwls[1] === TonalLetterTags.a)
-              ) {
-                arrEntry.push(dict[vwls[1] + pair[0]][0] || '');
+            const fldValue: string[] = dict[vwls + pair[0]] || [];
+            if (fldValue.length == 0) {
+              if (vwls.length == 2) {
+                if (
+                  (vwls[0] === TonalLetterTags.i &&
+                    vwls[1] === TonalLetterTags.a) ||
+                  (vwls[0] === TonalLetterTags.i &&
+                    vwls[1] === TonalLetterTags.u) ||
+                  (vwls[0] === TonalLetterTags.u &&
+                    vwls[1] === TonalLetterTags.a)
+                )
+                  // in case of -iann, -iunn, -uann
+                  fldValue.push(dict[vwls[1] + pair[0]][0] || '');
+              } else if (vwls.length == 3) {
+                if (
+                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
+                    vwls[vwls.length - 1] === TonalLetterTags.i) ||
+                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
+                    vwls[vwls.length - 1] === TonalLetterTags.u)
+                )
+                  // in case of -uainn, -iaunn
+                  fldValue.push(
+                    dict[
+                      vwls[vwls.length - 2] + vwls[vwls.length - 1] + pair[0]
+                    ][0] || ''
+                  );
+                bpmf.pop(); // pop a vowel
               }
             }
 
-            bpmf.pop(); // pop vowels
-            bpmf.push(arrEntry[0]); // push nasalized vowels
+            // console.log('>' + vwls + '>' + pair[0] + '>' + fldValue);
+            bpmf.pop(); // pop a vowel
+            bpmf.push(fldValue[0]); // push nasalized vowels
           }
         });
       }
