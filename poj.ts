@@ -5,10 +5,7 @@ import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
 
 import * as fs from 'fs';
-import {
-  TonalLetterTags,
-  TonalSpellingTags,
-} from '../taipa/src/tonal/tonalres';
+import { ToneLetterTags, TonalSpellingTags } from '../taipa/src/tonal/tonalres';
 
 /**
  * > node path/to/poj.js
@@ -73,13 +70,13 @@ stdin.addListener('data', function (d) {
             const chr: string = dict[pair[0]] || '';
 
             if (pair[1] === TonalSpellingTags.vowel) {
-              if (pair[0] !== TonalLetterTags.o) {
+              if (pair[0] !== ToneLetterTags.o) {
                 poj.push(chr);
               } else {
-                poj.push(dict[TonalLetterTags.ur]);
+                poj.push(dict[ToneLetterTags.ur]);
               }
 
-              if (pair[0] === TonalLetterTags.o) {
+              if (pair[0] === ToneLetterTags.o) {
                 poj.push('\u0358');
               }
             } else if (
