@@ -3,10 +3,7 @@ import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
-import {
-  TonalLetterTags,
-  TonalSpellingTags,
-} from '../taipa/src/tonal/tonalres';
+import { ToneLetterTags, TonalSpellingTags } from '../taipa/src/tonal/tonalres';
 
 import * as fs from 'fs';
 
@@ -77,46 +74,46 @@ stdin.addListener('data', function (d) {
             } else if (
               idx > 0 &&
               arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[idx - 1][0] === TonalLetterTags.c &&
+              arrPairs[idx - 1][0] === ToneLetterTags.c &&
               pair[1] === TonalSpellingTags.vowel &&
-              pair[0] === TonalLetterTags.i
+              pair[0] === ToneLetterTags.i
             ) {
               // in case of ci
               bpmf.pop(); // pop c
-              bpmf.push(dict[TonalLetterTags.c + TonalLetterTags.i][0]);
+              bpmf.push(dict[ToneLetterTags.c + ToneLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push ci
             } else if (
               idx > 0 &&
               arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[idx - 1][0] === TonalLetterTags.ch &&
+              arrPairs[idx - 1][0] === ToneLetterTags.ch &&
               pair[1] === TonalSpellingTags.vowel &&
-              pair[0] === TonalLetterTags.i
+              pair[0] === ToneLetterTags.i
             ) {
               // in case of chi
               bpmf.pop(); // pop ch
-              bpmf.push(dict[TonalLetterTags.ch + TonalLetterTags.i][0]);
+              bpmf.push(dict[ToneLetterTags.ch + ToneLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push chi
             } else if (
               idx > 0 &&
               arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[idx - 1][0] === TonalLetterTags.s &&
+              arrPairs[idx - 1][0] === ToneLetterTags.s &&
               pair[1] === TonalSpellingTags.vowel &&
-              pair[0] === TonalLetterTags.i
+              pair[0] === ToneLetterTags.i
             ) {
               // in case of si
               bpmf.pop(); // pop s
-              bpmf.push(dict[TonalLetterTags.s + TonalLetterTags.i][0]);
+              bpmf.push(dict[ToneLetterTags.s + ToneLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push si
             } else if (
               idx > 0 &&
               arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
-              arrPairs[idx - 1][0] === TonalLetterTags.j &&
+              arrPairs[idx - 1][0] === ToneLetterTags.j &&
               pair[1] === TonalSpellingTags.vowel &&
-              pair[0] === TonalLetterTags.i
+              pair[0] === ToneLetterTags.i
             ) {
               // in case of ji
               bpmf.pop(); // pop j
-              bpmf.push(dict[TonalLetterTags.j + TonalLetterTags.i][0]);
+              bpmf.push(dict[ToneLetterTags.j + ToneLetterTags.i][0]);
               bpmf.push(arrEntry[0]); // push ji
             } else {
               bpmf.push(arrEntry[0]);
@@ -137,21 +134,20 @@ stdin.addListener('data', function (d) {
             if (fldValue.length == 0) {
               if (vwls.length == 2) {
                 if (
-                  (vwls[0] === TonalLetterTags.i &&
-                    vwls[1] === TonalLetterTags.a) ||
-                  (vwls[0] === TonalLetterTags.i &&
-                    vwls[1] === TonalLetterTags.u) ||
-                  (vwls[0] === TonalLetterTags.u &&
-                    vwls[1] === TonalLetterTags.a)
+                  (vwls[0] === ToneLetterTags.i &&
+                    vwls[1] === ToneLetterTags.a) ||
+                  (vwls[0] === ToneLetterTags.i &&
+                    vwls[1] === ToneLetterTags.u) ||
+                  (vwls[0] === ToneLetterTags.u && vwls[1] === ToneLetterTags.a)
                 )
                   // in case of -iann, -iunn, -uann
                   fldValue.push(dict[vwls[1] + pair[0]][0] || '');
               } else if (vwls.length == 3) {
                 if (
-                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
-                    vwls[vwls.length - 1] === TonalLetterTags.i) ||
-                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
-                    vwls[vwls.length - 1] === TonalLetterTags.u)
+                  (vwls[vwls.length - 2] === ToneLetterTags.a &&
+                    vwls[vwls.length - 1] === ToneLetterTags.i) ||
+                  (vwls[vwls.length - 2] === ToneLetterTags.a &&
+                    vwls[vwls.length - 1] === ToneLetterTags.u)
                 )
                   // in case of -uainn, -iaunn
                   fldValue.push(
