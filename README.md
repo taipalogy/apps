@@ -28,10 +28,10 @@ Replace file name in the above commaond line with your implementation. For examp
 
 `tsc -m commonjs -t es2022 --outDir out kana.ts`
 
-Assuming you have your app `bpmf.ts` compiled to `bpmf.js` by runnng the command line:
+Assuming you have your app `twbpmf.ts` compiled to `twbpmf.js` by runnng the command line:
 
-`tsc -m commonjs -t es2022 --outDir out bpmf.ts`
+`tsc -m commonjs -t es2022 --outDir out twbpmf.ts`
 
 , and you have your own dictionary stored at `../dictionaries/bopomofo.json`, you can run the following command line to lauch the app:
 
-`node out/apps/bpmf.js ../dictionaries/bopomofo.json`
+`node out/apps/twbpmf.js ../dictionaries/twbpmf.json`
