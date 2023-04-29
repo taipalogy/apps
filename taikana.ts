@@ -6,10 +6,10 @@ import { Client, TokenAnalysis } from '../taipa/src/client';
 
 const stdin = process.openStdin();
 
-stdin.addListener('data', function (d) {
+stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
     const cli = new Client();
-    const ta: TokenAnalysis = cli.processTonal(d.toString().trim());
+    const ta: TokenAnalysis = cli.processTonal(data.toString().trim());
 
     ta.blockSequences.map((v) => console.info(v));
   }

@@ -36,16 +36,16 @@ function analyze(input: string) {
   return pairs;
 }
 
-stdin.addListener('data', function (d) {
+stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
-    analyze(d.toString()).forEach((v) => {
+    analyze(data.toString()).forEach((v) => {
       console.info(v[0] + ' - ' + v[1]);
     });
   } else if (process.argv.length == 3) {
     if (!fs.existsSync(process.argv[2])) {
       console.log('File not found');
     } else {
-      const input = d.toString().trim();
+      const input = data.toString().trim();
       const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
       const dict: string[] = JSON.parse(fileContents) || [];
       const keys = Object.keys(dict);
