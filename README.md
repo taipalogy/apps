@@ -20,6 +20,8 @@ or simply run the following command line to install it after you clone this repo
 
 `npm install`
 
+You need the package.json file in the folder before you run `npm install`. You can run `npm init` or simply copy one from a repo to have it in place.
+
 Run the following command line to compile your TypeScript code to JavaScript:
 
 `tsc -m commonjs -t es2022 --outDir out myapp.ts`
