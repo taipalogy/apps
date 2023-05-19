@@ -3,14 +3,15 @@ import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
 import { getLetterSoundPairs } from '../taipa/src/util';
-import { ToneLetterTags, TonalSpellingTags } from '../taipa/src/tonal/tonalres';
+import {
+  TonalLetterTags,
+  TonalSpellingTags,
+} from '../taipa/src/tonal/tonalres';
 
 import * as fs from 'fs';
 
 /**
- * bopomofo
- *
- * > node path/to/bpmf.js
+ * > node path/to/mix.js
  */
 
 const stdin = process.openStdin();
@@ -79,26 +80,26 @@ stdin.addListener('data', function (data) {
               // console.log('idx:' + idx + '>' + arrPairs[idx - 1][0] + pair[0]);
               bpmf.pop(); // pop initial
               if (
-                pair[0] === ToneLetterTags.a ||
-                pair[0] === ToneLetterTags.i ||
-                pair[0] === ToneLetterTags.u ||
-                pair[0] === ToneLetterTags.o
+                pair[0] === TonalLetterTags.a ||
+                pair[0] === TonalLetterTags.i ||
+                pair[0] === TonalLetterTags.u ||
+                pair[0] === TonalLetterTags.o
               ) {
                 // in case of a, i, u, o
                 // push syllabogram
                 bpmf.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                 // bpmf.push(arrEntry[0]);
-              } else if (pair[0] === ToneLetterTags.e) {
+              } else if (pair[0] === TonalLetterTags.e) {
                 // in case of e
                 const fnl = arrPairs.filter(
                   (it) =>
-                    it[0] === ToneLetterTags.k &&
+                    it[0] === TonalLetterTags.k &&
                     it[1] === TonalSpellingTags.stopFinalConsonant
                 );
                 if (fnl.length > 0) {
                   // in case of ~ek
                   // push pi, ti, ki, etc.
-                  bpmf.push(dict[arrPairs[idx - 1][0] + ToneLetterTags.i][0]);
+                  bpmf.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.i][0]);
                   bpmf.push(arrEntry[1]); // push small kana e
                 } else {
                   // in case of e
@@ -108,7 +109,7 @@ stdin.addListener('data', function (data) {
               } else {
                 // in case of ur, or, er, ir
                 // push syllabogram
-                bpmf.push(dict[arrPairs[idx - 1][0] + ToneLetterTags.o][0]);
+                bpmf.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
                 // push one more syllabogram
                 // bc this letter is not one of a, i, u, e, o
                 bpmf.push(arrEntry[1]); // push small kana
@@ -141,20 +142,21 @@ stdin.addListener('data', function (data) {
             if (fldValue.length == 0) {
               if (vwls.length == 2) {
                 if (
-                  (vwls[0] === ToneLetterTags.i &&
-                    vwls[1] === ToneLetterTags.a) ||
-                  (vwls[0] === ToneLetterTags.i &&
-                    vwls[1] === ToneLetterTags.u) ||
-                  (vwls[0] === ToneLetterTags.u && vwls[1] === ToneLetterTags.a)
+                  (vwls[0] === TonalLetterTags.i &&
+                    vwls[1] === TonalLetterTags.a) ||
+                  (vwls[0] === TonalLetterTags.i &&
+                    vwls[1] === TonalLetterTags.u) ||
+                  (vwls[0] === TonalLetterTags.u &&
+                    vwls[1] === TonalLetterTags.a)
                 )
                   // in case of -iann, -iunn, -uann
                   fldValue.push(dict[vwls[1] + pair[0]][0] || '');
               } else if (vwls.length == 3) {
                 if (
-                  (vwls[vwls.length - 2] === ToneLetterTags.a &&
-                    vwls[vwls.length - 1] === ToneLetterTags.i) ||
-                  (vwls[vwls.length - 2] === ToneLetterTags.a &&
-                    vwls[vwls.length - 1] === ToneLetterTags.u)
+                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
+                    vwls[vwls.length - 1] === TonalLetterTags.i) ||
+                  (vwls[vwls.length - 2] === TonalLetterTags.a &&
+                    vwls[vwls.length - 1] === TonalLetterTags.u)
                 )
                   // in case of -uainn, -iaunn
                   fldValue.push(
