@@ -88,8 +88,17 @@ stdin.addListener('data', function (data) {
             const nslFnl = arrPairs.filter(
               (it) => it[1] === TonalSpellingTags.nasalFinalConsonant
             );
-
-            // console.log(init, vwls, nslFnl);
+            const nslztn = arrPairs.filter(
+              (it) => it[1] === TonalSpellingTags.nasalization
+            );
+            const stpFnl = arrPairs.filter(
+              (it) => it[1] === TonalSpellingTags.stopFinalConsonant
+            );
+            const tnl = arrPairs.filter(
+              (it) =>
+                it[1] === TonalSpellingTags.freeTone ||
+                it[1] === TonalSpellingTags.checkedTone
+            );
 
             if (keys.includes(pair[0])) {
               const fldValue: string[] = dict[pair[0]] || [];
@@ -99,6 +108,9 @@ stdin.addListener('data', function (data) {
               ) {
                 // the 4th tone
                 syllabograms.push(fldValue[1]);
+                if (nslztn.length > 0 && tnl.length == 0) {
+                  syllabograms.push(dict[TonalLetterTags.nn][1]);
+                }
               } else if (
                 idx > 0 &&
                 arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
@@ -145,6 +157,24 @@ stdin.addListener('data', function (data) {
                   // bc this letter is not one of a, i, u, e, o
                   syllabograms.push(fldValue[1]); // push small kana
                 }
+              } else if (
+                pair[1] === TonalSpellingTags.freeTone ||
+                pair[1] === TonalSpellingTags.checkedTone
+              ) {
+                // in case of tone
+
+                // console.log('>' + pair);
+
+                // in case of nasalization
+                if (nslztn.length > 0)
+                  syllabograms.push(fldValue[1]); // push nasalized tone mark
+                else syllabograms.push(fldValue[0]);
+              } else if (pair[1] === TonalSpellingTags.nasalization) {
+                // in case of nasalization
+                if (tnl.length == 0 && stpFnl.length == 0) {
+                  // in case of no tone letters
+                  syllabograms.push(fldValue[1]); // push nasalized tone mark
+                }
               } else {
                 if (
                   idx > 1 &&
@@ -153,9 +183,7 @@ stdin.addListener('data', function (data) {
                   // in case of leading kanas,
                   // which means an initial followed by a leading vowel
 
-                  if (pair[1] === TonalSpellingTags.freeTone)
-                    syllabograms.push(fldValue[0]);
-                  else syllabograms.push(fldValue[1]); // push the small kana
+                  syllabograms.push(fldValue[1]); // push the small kana
                 } else {
                   if (
                     init.length == 1 &&
@@ -175,23 +203,6 @@ stdin.addListener('data', function (data) {
                   }
                 }
               }
-            } else if (pair[1] === TonalSpellingTags.nasalization) {
-              // in case of nasalization
-
-              // get vowels
-              const vs: string[] = [];
-              let i = idx - 1;
-              while (i >= 0 && arrPairs[i][1] === TonalSpellingTags.vowel) {
-                vs.unshift(arrPairs[i][0]);
-                i--;
-              }
-
-              const vwls = vs.join('');
-              const fldValue: string[] = dict[vwls + pair[0]] || [];
-
-              // console.log('>' + vwls + '>' + pair[0] + '>' + fldValue);
-              syllabograms.pop(); // pop a vowel
-              syllabograms.push(fldValue[0]); // push nasalized vowels
             } else {
               // in case of no matched field keys in json
               // in case of chu for chng, thng, khngw
