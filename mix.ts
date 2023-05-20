@@ -103,14 +103,25 @@ stdin.addListener('data', function (data) {
             if (keys.includes(pair[0])) {
               const fldValue: string[] = dict[pair[0]] || [];
               if (
-                pair[1] === TonalSpellingTags.stopFinalConsonant &&
-                pair[0].length == 1
+                pair[1] === TonalSpellingTags.stopFinalConsonant
+                //  && pair[0].length == 1
               ) {
                 // the 4th tone
-                syllabograms.push(fldValue[1]);
-                if (nslztn.length > 0 && tnl.length == 0) {
-                  syllabograms.push(dict[TonalLetterTags.nn][1]);
+                if (
+                  pair[0] !== TonalLetterTags.h &&
+                  pair[0] !== TonalLetterTags.hh
+                ) {
+                  syllabograms.push(fldValue[1]);
+                } else {
+                  syllabograms.push(fldValue[2]);
                 }
+                // if (
+                //   nslztn.length > 0 &&
+                //   tnl.length == 0
+                //   //  && pair[0].length == 1
+                // ) {
+                //   syllabograms.push(dict[TonalLetterTags.nn][2]);
+                // }
               } else if (
                 idx > 0 &&
                 arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
@@ -164,7 +175,7 @@ stdin.addListener('data', function (data) {
               ) {
                 // in case of tone
 
-                // console.log('>' + pair);
+                console.log('>' + pair);
 
                 // in case of nasalization
                 if (nslztn.length > 0)
@@ -192,11 +203,20 @@ stdin.addListener('data', function (data) {
                   vwls.length == 0 &&
                   nslFnl.length == 1
                 ) {
+                  // console.log('>' + fldValue);
                   // in case of sng, kng, mnghh, etc.
-                  if (fldValue.length > 0) syllabograms.push(fldValue[1]);
-                  else if (fldValue.length > 0) {
+                  if (
+                    fldValue.length > 0 &&
+                    pair[1] === TonalSpellingTags.nasalFinalConsonant
+                  )
+                    syllabograms.push(fldValue[1]);
+                  else if (
+                    fldValue.length > 0 &&
+                    pair[1] === TonalSpellingTags.initialConsonant
+                  ) {
+                    // in case of initial consonant
                     // push su for s, ku for k, etc.
-                    syllabograms.push(dict[pair[0] + TonalLetterTags.u][1]);
+                    syllabograms.push(dict[pair[0] + TonalLetterTags.u][0]);
                   }
                 } else if (mtrLctns.length > 0) {
                   syllabograms.push(fldValue[0]);
@@ -205,6 +225,7 @@ stdin.addListener('data', function (data) {
                 }
               }
             } else {
+              // in case of initial consonant
               // in case of no matched field keys in json
               // in case of chu for chng, thng, khngw
               syllabograms.push(dict[pair[0] + TonalLetterTags.u][0]);
