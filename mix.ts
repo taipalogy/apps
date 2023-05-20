@@ -116,6 +116,7 @@ stdin.addListener('data', function (data) {
                 arrPairs[idx - 1][1] === TonalSpellingTags.initialConsonant &&
                 pair[1] === TonalSpellingTags.vowel
               ) {
+                // in case of preceding initial and vowel
                 // console.log('idx:' + idx + '>' + arrPairs[idx - 1][0] + pair[0]);
                 syllabograms.pop(); // pop initial
                 if (
@@ -177,30 +178,30 @@ stdin.addListener('data', function (data) {
                 }
               } else {
                 if (
-                  idx > 1 &&
-                  arrPairs[0][1] === TonalSpellingTags.initialConsonant
+                  (idx > 1 &&
+                    arrPairs[0][1] === TonalSpellingTags.initialConsonant) ||
+                  (idx > 0 && arrPairs[0][1] === TonalSpellingTags.vowel)
                 ) {
                   // in case of leading kanas,
                   // which means an initial followed by a leading vowel
+                  // or a leading vowel
 
                   syllabograms.push(fldValue[1]); // push the small kana
-                } else {
-                  if (
-                    init.length == 1 &&
-                    vwls.length == 0 &&
-                    nslFnl.length == 1
-                  ) {
-                    // in case of sng, kng, mnghh, etc.
-                    if (fldValue.length > 0) syllabograms.push(fldValue[1]);
-                    else if (fldValue.length > 0) {
-                      // push su for s, ku for k, etc.
-                      syllabograms.push(dict[pair[0] + TonalLetterTags.u][1]);
-                    }
-                  } else if (mtrLctns.length > 0) {
-                    syllabograms.push(fldValue[0]);
-                  } else {
-                    syllabograms.push(fldValue[0]);
+                } else if (
+                  init.length == 1 &&
+                  vwls.length == 0 &&
+                  nslFnl.length == 1
+                ) {
+                  // in case of sng, kng, mnghh, etc.
+                  if (fldValue.length > 0) syllabograms.push(fldValue[1]);
+                  else if (fldValue.length > 0) {
+                    // push su for s, ku for k, etc.
+                    syllabograms.push(dict[pair[0] + TonalLetterTags.u][1]);
                   }
+                } else if (mtrLctns.length > 0) {
+                  syllabograms.push(fldValue[0]);
+                } else {
+                  syllabograms.push(fldValue[0]);
                 }
               }
             } else {
