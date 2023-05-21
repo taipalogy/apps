@@ -111,9 +111,14 @@ stdin.addListener('data', function (data) {
                   pair[0] !== TonalLetterTags.h &&
                   pair[0] !== TonalLetterTags.hh
                 ) {
+                  // in case of stop finals other than h, hh
                   syllabograms.push(fldValue[1]);
                 } else {
-                  syllabograms.push(fldValue[2]);
+                  // in case of stop final h, hh
+                  // console.log('>' + syllabograms + '>' + fldValue);
+                  if (nslztn.length > 0 && tnl.length == 0)
+                    syllabograms.push(fldValue[2]);
+                  else syllabograms.push(fldValue[1]);
                 }
                 // if (
                 //   nslztn.length > 0 &&
@@ -175,7 +180,7 @@ stdin.addListener('data', function (data) {
               ) {
                 // in case of tone
 
-                console.log('>' + pair);
+                // console.log('>' + pair);
 
                 // in case of nasalization
                 if (nslztn.length > 0)
@@ -184,8 +189,9 @@ stdin.addListener('data', function (data) {
               } else if (pair[1] === TonalSpellingTags.nasalization) {
                 // in case of nasalization
                 if (tnl.length == 0 && stpFnl.length == 0) {
-                  // in case of no tone letters
-                  syllabograms.push(fldValue[1]); // push nasalized tone mark
+                  // console.log(fldValue);
+                  // in case of no tone letters, aka first tone
+                  syllabograms.push(fldValue[2]); // push nasalized tone mark
                 }
               } else {
                 if (
