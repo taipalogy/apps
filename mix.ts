@@ -33,7 +33,7 @@ export function getLetterSoundPairsSyllabic(
   });
 }
 
-function analyzeSyllables(input: string) {
+function analyzeIntoSyllables(input: string) {
   const cli = new Client();
   const tla = tonalLemmatizationAnalyzer;
   const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
@@ -76,7 +76,7 @@ stdin.addListener('data', function (data) {
       const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
       const dict: string[] = JSON.parse(fileContents) || [];
       const keys = Object.keys(dict);
-      const syllables = analyzeSyllables(input);
+      const syllables = analyzeIntoSyllables(input);
 
       const syllabograms: string[] = [];
       if (syllables.length == 0) {
@@ -125,11 +125,21 @@ stdin.addListener('data', function (data) {
                 ) {
                   // in case of stop finals other than h, hh
                   syllabograms.push(fldValue[1]);
+                  if (tnl.length == 0) {
+                    // push 4th tone mark
+                    syllabograms.push(dict[TonalLetterTags.h][3]);
+                  }
                 } else {
                   // in case of stop final h, hh
                   if (nslztn.length > 0 && tnl.length == 0)
                     syllabograms.push(fldValue[2]);
-                  else syllabograms.push(fldValue[1]);
+                  else {
+                    syllabograms.push(fldValue[1]);
+                    if (tnl.length == 0) {
+                      // push 4th tone mark
+                      syllabograms.push(fldValue[3]);
+                    }
+                  }
                 }
               } else if (
                 idx > 0 &&
