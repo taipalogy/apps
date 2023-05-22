@@ -124,19 +124,22 @@ stdin.addListener('data', function (data) {
                   pair[0] !== TonalLetterTags.hh
                 ) {
                   // in case of stop finals other than h, hh
+                  // could be 4th or 8th tone
                   kanas.push(fldValue[1]);
-                  if (tnl.length == 0) {
-                    // push 4th tone mark
+                  if (tnl.length == 0 && pair[0].length == 1) {
+                    // push 4th tone mark, if present in json
                     kanas.push(dict[TonalLetterTags.h][3]);
                   }
                 } else {
                   // in case of stop final h, hh
-                  if (nslztn.length > 0 && tnl.length == 0)
+                  // could be 4th or 8th tone
+                  if (nslztn.length > 0 && tnl.length == 0) {
+                    // in case of nasalization
                     kanas.push(fldValue[2]);
-                  else {
+                  } else {
                     kanas.push(fldValue[1]);
-                    if (tnl.length == 0) {
-                      // push 4th tone mark
+                    if (tnl.length == 0 && pair[0].length == 1) {
+                      // push 4th tone mark, if present in json
                       kanas.push(fldValue[3]);
                     }
                   }
