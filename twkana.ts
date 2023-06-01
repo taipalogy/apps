@@ -48,7 +48,7 @@ function analyzeIntoSyllables(input: string) {
   return pairs;
 }
 
-function analyzeSpell(input: string) {
+function analyzeIntoSequence(input: string) {
   const cli = new Client();
   const tla = tonalLemmatizationAnalyzer;
   const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
@@ -65,7 +65,7 @@ function analyzeSpell(input: string) {
 
 stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
-    analyzeSpell(data.toString()).forEach((v) => {
+    analyzeIntoSequence(data.toString()).forEach((v) => {
       console.info(v[0] + ' - ' + v[1]);
     });
   } else if (process.argv.length == 3) {
