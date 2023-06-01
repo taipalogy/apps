@@ -2,12 +2,14 @@ import { Client, TokenAnalysis } from '../taipa/src/client';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
-import { getLetterSoundPairs } from '../taipa/src/util';
+import {
+  getLetterSoundPairsSequential,
+  getLetterSoundPairsSyllabic,
+} from '../taipa/src/util';
 import {
   TonalLetterTags,
   TonalSpellingTags,
 } from '../taipa/src/tonal/tonalres';
-import { Sound } from '../taipa/src/unit';
 
 import * as fs from 'fs';
 
@@ -21,16 +23,6 @@ if (process.argv.length == 3) {
   if (!fs.existsSync(process.argv[2])) {
     console.log('File not found');
   }
-}
-
-export function getLetterSoundPairsSyllabic(
-  soundSeqs: Sound[][]
-): [string, string][][] {
-  // return letter-sound-name pairs
-
-  return soundSeqs.map((v) => {
-    return v.map((v) => [v.toString(), v.name]);
-  });
 }
 
 function analyzeIntoSyllables(input: string) {
@@ -54,7 +46,7 @@ function analyzeIntoSequence(input: string) {
   const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
   const wrd = ta.word as TonalWord; // type casting
 
-  const pairs = getLetterSoundPairs(
+  const pairs = getLetterSoundPairsSequential(
     tla
       .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
       .map((x) => x.sounds)
