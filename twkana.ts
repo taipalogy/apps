@@ -71,17 +71,19 @@ stdin.addListener('data', function (data) {
       const syllables = analyzeIntoSyllables(input);
 
       const kanas: string[] = [];
+      const syle: string[] = [];
+
       if (syllables.length == 0) {
         for (const key of keys) {
           if (key === input) {
-            const arr: [] = dict[key];
-            const chrs = arr.join(',');
-            // console.info(chrs);
-            kanas.push(chrs);
+            const arr: string[] = dict[key];
+            // console.info(arr[1]);
+            kanas.push(arr[1]);
           }
         }
       } else {
-        syllables.forEach((ltrSndPairs) =>
+        syllables.forEach((ltrSndPairs) => {
+          syle.length = 0; // reset the array
           ltrSndPairs.forEach((pair: [string, string], idx, arrPairs) => {
             const init = arrPairs.filter(
               (it) => it[1] === TonalSpellingTags.initialConsonant
@@ -117,22 +119,22 @@ stdin.addListener('data', function (data) {
                 ) {
                   // in case of stop finals other than h, hh
                   // could be 4th or 8th tone
-                  kanas.push(fldValue[1]);
+                  syle.push(fldValue[1]);
                   if (tnl.length == 0 && pair[0].length == 1) {
                     // push 4th tone mark, if present in json
-                    kanas.push(dict[TonalLetterTags.h][3]);
+                    syle.push(dict[TonalLetterTags.h][3]);
                   }
                 } else {
                   // in case of stop final h, hh
                   // could be 4th or 8th tone
                   if (nslztn.length > 0 && tnl.length == 0) {
                     // in case of nasalization
-                    kanas.push(fldValue[2]);
+                    syle.push(fldValue[2]);
                   } else {
-                    kanas.push(fldValue[1]);
+                    syle.push(fldValue[1]);
                     if (tnl.length == 0 && pair[0].length == 1) {
                       // push 4th tone mark, if present in json
-                      kanas.push(fldValue[3]);
+                      syle.push(fldValue[3]);
                     }
                   }
                 }
@@ -142,7 +144,7 @@ stdin.addListener('data', function (data) {
                 pair[1] === TonalSpellingTags.vowel
               ) {
                 // in case of preceding initial and vowel
-                kanas.pop(); // pop initial
+                syle.pop(); // pop initial
                 if (
                   pair[0] === TonalLetterTags.a ||
                   pair[0] === TonalLetterTags.i ||
@@ -151,7 +153,7 @@ stdin.addListener('data', function (data) {
                 ) {
                   // in case of a, i, u, o
                   // push syllabogram
-                  kanas.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
+                  syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                 } else if (pair[0] === TonalLetterTags.e) {
                   // in case of e
                   const fnl = arrPairs.filter(
@@ -164,26 +166,26 @@ stdin.addListener('data', function (data) {
                     // in case of ~ek
                     // push pi, ti, ki, etc.
                     if (pair[0].length == 1)
-                      kanas.push(
+                      syle.push(
                         dict[arrPairs[idx - 1][0] + TonalLetterTags.i][0]
                       );
                     else
-                      kanas.push(
+                      syle.push(
                         dict[arrPairs[idx - 1][0] + TonalLetterTags.i][1]
                       );
-                    kanas.push(fldValue[1]); // push small kana e
+                    syle.push(fldValue[1]); // push small kana e
                   } else {
                     // in case of e. not ~ek or ~ekk
                     // push kana
-                    kanas.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
+                    syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                   }
                 } else {
                   // in case of ur, or, er, ir
                   // push syllabogram
-                  kanas.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
+                  syle.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
                   // push one more syllabogram
                   // bc this letter is not one of a, i, u, e, o
-                  kanas.push(fldValue[1]); // push small kana
+                  syle.push(fldValue[1]); // push small kana
                 }
               } else if (
                 pair[1] === TonalSpellingTags.freeTone ||
@@ -192,13 +194,13 @@ stdin.addListener('data', function (data) {
                 // in case of tone
                 // in case of nasalization
                 if (nslztn.length > 0)
-                  kanas.push(fldValue[1]); // push nasalized tone mark
-                else kanas.push(fldValue[0]);
+                  syle.push(fldValue[1]); // push nasalized tone mark
+                else syle.push(fldValue[0]);
               } else if (pair[1] === TonalSpellingTags.nasalization) {
                 // in case of nasalization
                 if (tnl.length == 0 && stpFnl.length == 0) {
                   // in case of no tone letters, aka first tone
-                  kanas.push(fldValue[2]); // push nasalized tone mark
+                  syle.push(fldValue[2]); // push nasalized tone mark
                 }
               } else {
                 if (
@@ -210,7 +212,7 @@ stdin.addListener('data', function (data) {
                   // which means an initial followed by a leading vowel
                   // or a leading vowel
 
-                  kanas.push(fldValue[1]); // push the small kana
+                  syle.push(fldValue[1]); // push the small kana
                 } else if (
                   init.length == 1 &&
                   vwls.length == 0 &&
@@ -221,17 +223,17 @@ stdin.addListener('data', function (data) {
                     fldValue.length > 0 &&
                     pair[1] === TonalSpellingTags.nasalFinalConsonant
                   )
-                    kanas.push(fldValue[1]);
+                    syle.push(fldValue[1]);
                   else if (
                     fldValue.length > 0 &&
                     pair[1] === TonalSpellingTags.initialConsonant
                   ) {
                     // in case of initial consonant
                     // push su for s, ku for k, etc.
-                    kanas.push(dict[pair[0] + TonalLetterTags.u][0]);
+                    syle.push(dict[pair[0] + TonalLetterTags.u][0]);
                   }
                 } else if (mtrLctns.length > 0) {
-                  kanas.push(fldValue[0]);
+                  syle.push(fldValue[0]);
                 } else if (
                   init.length == 0 &&
                   pair[0] === TonalLetterTags.e &&
@@ -240,20 +242,21 @@ stdin.addListener('data', function (data) {
                     arrPairs[idx + 1][0] === TonalLetterTags.kk)
                 ) {
                   // in case of ek or ekk. no initial
-                  kanas.push(dict[TonalLetterTags.i][0]); // push i
-                  kanas.push(dict[TonalLetterTags.e][1]); // push small e
+                  syle.push(dict[TonalLetterTags.i][0]); // push i
+                  syle.push(dict[TonalLetterTags.e][1]); // push small e
                 } else {
-                  kanas.push(fldValue[0]);
+                  syle.push(fldValue[0]);
                 }
               }
             } else {
               // in case of initial consonant
               // in case of no matched field keys in json
               // in case of chu for chng, thng, khngw
-              kanas.push(dict[pair[0] + TonalLetterTags.u][0]);
+              syle.push(dict[pair[0] + TonalLetterTags.u][0]);
             }
-          })
-        );
+          });
+          kanas.push(syle.join(''));
+        });
       }
 
       console.info(kanas.join(''));
