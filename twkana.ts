@@ -74,12 +74,10 @@ stdin.addListener('data', function (data) {
       const syle: string[] = [];
 
       if (syllables.length == 0) {
-        for (const key of keys) {
-          if (key === input) {
-            const arr: string[] = dict[key];
-            // console.info(arr[1]);
-            kanas.push(arr[1]);
-          }
+        if (keys.includes(input as string)) {
+          const arr: string = dict[input];
+          // console.info('>' + arr[1]);
+          kanas.push(arr[0]);
         }
       } else {
         syllables.forEach((ltrSndPairs) => {
