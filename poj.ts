@@ -2,7 +2,7 @@ import { Client, TokenAnalysis } from '../taipa/src/client';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
-import { getLetterSoundPairs } from '../taipa/src/util';
+import { getLetterSoundPairsSequential } from '../taipa/src/util';
 
 import * as fs from 'fs';
 import {
@@ -37,7 +37,7 @@ function analyze(input: string) {
   const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
   const wrd = ta.word as TonalWord; // type casting
 
-  const pairs = getLetterSoundPairs(
+  const pairs = getLetterSoundPairsSequential(
     tla
       .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
       .map((x) => x.sounds)
