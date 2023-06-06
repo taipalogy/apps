@@ -2,7 +2,10 @@ import { Client, TokenAnalysis } from '../taipa/src/client';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
-import { getLetterSoundPairsSequential } from '../taipa/src/util';
+import {
+  analyzeIntoSequence,
+  getLetterSoundPairsSequential,
+} from '../taipa/src/util';
 import {
   TonalLetterTags,
   TonalSpellingTags,
@@ -24,24 +27,9 @@ if (process.argv.length == 3) {
   }
 }
 
-function analyze(input: string) {
-  const cli = new Client();
-  const tla = tonalLemmatizationAnalyzer;
-  const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
-  const wrd = ta.word as TonalWord; // type casting
-
-  const pairs = getLetterSoundPairsSequential(
-    tla
-      .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
-      .map((x) => x.sounds)
-  );
-
-  return pairs;
-}
-
 stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
-    analyze(data.toString()).forEach((v) => {
+    analyzeIntoSequence(data.toString()).forEach((v) => {
       console.info(v[0] + ' - ' + v[1]);
     });
   } else if (process.argv.length == 3) {
@@ -52,7 +40,7 @@ stdin.addListener('data', function (data) {
       const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
       const dict: string[] = JSON.parse(fileContents) || [];
       const keys = Object.keys(dict);
-      const ltrSndPairs = analyze(input);
+      const ltrSndPairs = analyzeIntoSequence(input);
 
       const bpmf: string[] = [];
       if (ltrSndPairs.length == 0) {

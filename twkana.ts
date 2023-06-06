@@ -1,11 +1,4 @@
-import { Client, TokenAnalysis } from '../taipa/src/client';
-import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
-import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
-import { TonalWord } from '../taipa/src/unchange/unit';
-import {
-  getLetterSoundPairsSequential,
-  getLetterSoundPairsSyllabic,
-} from '../taipa/src/util';
+import { analyzeIntoSequence, analyzeIntoSyllables } from '../taipa/src/util';
 import {
   TonalLetterTags,
   TonalSpellingTags,
@@ -23,36 +16,6 @@ if (process.argv.length == 3) {
   if (!fs.existsSync(process.argv[2])) {
     console.log('File not found');
   }
-}
-
-function analyzeIntoSyllables(input: string) {
-  const cli = new Client();
-  const tla = tonalLemmatizationAnalyzer;
-  const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
-  const wrd = ta.word as TonalWord; // type casting
-
-  const pairs = getLetterSoundPairsSyllabic(
-    tla
-      .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
-      .map((x) => x.sounds)
-  );
-
-  return pairs;
-}
-
-function analyzeIntoSequence(input: string) {
-  const cli = new Client();
-  const tla = tonalLemmatizationAnalyzer;
-  const ta: TokenAnalysis = cli.processTonal(input.toString().trim());
-  const wrd = ta.word as TonalWord; // type casting
-
-  const pairs = getLetterSoundPairsSequential(
-    tla
-      .morphAnalyze(wrd.literal, new TonalUncombiningForms([]))
-      .map((x) => x.sounds)
-  );
-
-  return pairs;
 }
 
 stdin.addListener('data', function (data) {
