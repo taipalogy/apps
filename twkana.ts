@@ -113,7 +113,7 @@ stdin.addListener('data', function (data) {
                   pair[0] === TonalLetterTags.o
                 ) {
                   // in case of a, i, u, o
-                  // push syllabogram
+                  // push kana
                   syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                 } else if (pair[0] === TonalLetterTags.e) {
                   // in case of e
@@ -140,13 +140,29 @@ stdin.addListener('data', function (data) {
                     // push kana
                     syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                   }
-                } else {
-                  // in case of ur, or, er, ir
-                  // push syllabogram
+                } else if (
+                  pair[0] === TonalLetterTags.ur ||
+                  pair[0] === TonalLetterTags.er ||
+                  pair[0] === TonalLetterTags.or
+                ) {
+                  // in case of ur, er, or
+                  // use initial and vowel to get kana, push it
                   syle.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
-                  // push one more syllabogram
-                  // bc this letter is not one of a, i, u, e, o
+                  // push one more kana
+                  // because this letter is not one of a, i, u, e, o
                   syle.push(fldValue[1]); // push small kana
+
+                  // syllable jo is not present in syllable lists,
+                  // however it is still needed in syllabary for vowel er
+                } else if (pair[0] === TonalLetterTags.ir) {
+                  // in case of ir
+                  // use initial and vowel to get kana, push it
+                  syle.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.u][0]);
+                  // push one more kana
+                  // because this letter is not one of a, i, u, e, o
+                  syle.push(fldValue[1]); // push small kana
+                } else if (pair[0] === TonalLetterTags.ar) {
+                  // in case of ar
                 }
               } else if (
                 pair[1] === TonalSpellingTags.freeTone ||
