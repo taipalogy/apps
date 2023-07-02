@@ -177,7 +177,7 @@ stdin.addListener('data', function (data) {
                 // in case of nasalization
                 if (tnl.length == 0 && stpFnl.length == 0) {
                   // in case of no tone letters, aka first tone
-                  syle.push(fldValue[2]); // push nasalized tone mark
+                  syle.push(fldValue[2]); // push nasalization
                 }
               } else {
                 if (
