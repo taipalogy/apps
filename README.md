@@ -1,12 +1,12 @@
-# apps
+# Apps
 
 applications of Taipa
 
-## license
+## License
 
 MIT
 
-## development
+## Development
 
 If you don't have TypeScript installed, run the following command line to install TypeScript globally under your `~/.nvm`:
 
@@ -34,6 +34,76 @@ Assuming you have your app `twbpmf.ts` compiled to `twbpmf.js` by runnng the com
 
 `tsc -m commonjs -t es2022 --outDir out twbpmf.ts`
 
-, and you have your own dictionary stored at `../dictionaries/bopomofo.json`, you can run the following command line to lauch the app:
+, and you have your own dictionary placed at `../dictionaries/bopomofo.json`, you can run the following command line to lauch the app:
 
 `node out/apps/twbpmf.js ../dictionaries/twbpmf.json`
+
+### kana
+
+You can run the following command line to launch the kana application:
+
+`node out/apps/kana.js`
+
+You can then input Roman alphabet,
+
+`katakana`
+
+and hit the enter key, the app will then print the kanas. For example:
+
+`かたかな`
+
+and
+
+`カタカナ`
+
+will be printed on the screen.
+
+### twbpmf
+
+When you have your own dictionary available, you can implement an app to spell your word.
+
+Assuming you have a dictionary placed at
+
+`../dictionaries/twbpmf.json`.
+
+You can run the following command line to lauch the app:
+
+`node out/apps/twbpmf.js ../dictionaries/twbpmf.json`
+
+Enter Roman letters on your keyboard and get the bopomofo in return. Enter
+
+`ka`
+
+and get
+
+`ㄍㄚ`
+
+### twkana
+
+Assuming you have your app `twkana.ts` compiled to `twkana.js` by runnng the command line:
+
+`tsc -m commonjs -t es2022 --outDir out twkana.ts`
+
+And assuming you have a dictionary placed at
+
+`../dictionaries/twkana.json`.
+
+You can run the following command line to lauch the app:
+
+`node out/apps/twkana.js ../dictionaries/twkana.json`
+
+When you have an additional dictionary available, run then following command line to lauch the app:
+
+`node out/apps/twkana.js ../dictionaries/mix.json`
+
+Enter Roman letters on your keyboard and get the bopomofo in return. Enter
+
+`ka`
+
+and get
+
+`カ`
+
+## Dictionaries
+
+Go to github repo `https://github.com/taipalogy/dictionaries` to find out more dictionary examples.
