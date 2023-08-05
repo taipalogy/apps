@@ -134,10 +134,10 @@ stdin.addListener('data', function (data) {
                       syle.push(
                         dict[arrPairs[idx - 1][0] + TonalLetterTags.i][1]
                       );
-                    syle.push(fldValue[1]); // push small kana e
+                    // syle.push(fldValue[1]); // push small kana e
                   } else {
                     // in case of e. not ~ek or ~ekk
-                    // push kana
+                    // push kana e
                     syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
                   }
                 } else if (
@@ -220,7 +220,7 @@ stdin.addListener('data', function (data) {
                 ) {
                   // in case of ek or ekk. no initial
                   syle.push(dict[TonalLetterTags.i][0]); // push i
-                  syle.push(dict[TonalLetterTags.e][1]); // push small e
+                  // syle.push(dict[TonalLetterTags.e][1]); // push small e
                 } else {
                   syle.push(fldValue[0]);
                 }
