@@ -2,8 +2,6 @@ import * as fs from 'fs';
 
 const stdin = process.openStdin();
 
-// Define your transList to transliterate hangul
-
 const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
 const dict: string[] = JSON.parse(fileContents) || [];
 const keys = Object.keys(dict);
@@ -58,6 +56,6 @@ stdin.addListener('data', function (data) {
       );
     }
   } else {
-    console.log('Usage: ');
+    console.log('Usage: node path/to/transliterate from.json');
   }
 });
