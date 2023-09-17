@@ -68,12 +68,12 @@ stdin.addListener('data', function (data) {
       )
     );
 
+    // in order for the following snippet to work,
+    // a customized syllabary is required
     console.log(result);
     const members = result.map((m) => getSubSyllableMembers(m, keys));
     console.log(members);
 
-    // in order for the following snippet to work,
-    // a customized syllabary is required
     console.info(
       members.map((mem) =>
         mem.map((val, ind) => (ind == 0 ? dict[val][0] : dict[val][1])).join('')
