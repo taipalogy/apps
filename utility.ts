@@ -1,3 +1,5 @@
+import { TonalSpellingTags } from '../taipa/src/tonal/tonalres';
+
 // Analyze a syllable and get sub-syllable members.
 export function getSubSyllableMembers(
   sequence: string,
@@ -22,4 +24,52 @@ export function getSubSyllableMembers(
 
   // console.log('>' + result + '>' + sequence);
   return result;
+}
+
+export function getInitial(
+  ltrSndPairs: [string, string][]
+): [string, string][] {
+  return ltrSndPairs.filter(
+    (it) => it[1] === TonalSpellingTags.initialConsonant
+  );
+}
+
+export function getVowels(ltrSndPairs: [string, string][]): [string, string][] {
+  return ltrSndPairs.filter((it) => it[1] === TonalSpellingTags.vowel);
+}
+
+export function getMaterLectionis(
+  ltrSndPairs: [string, string][]
+): [string, string][] {
+  return ltrSndPairs.filter((it) => it[1] === TonalSpellingTags.materLectionis);
+}
+
+export function getNasalFinalConsonant(
+  ltrSndPairs: [string, string][]
+): [string, string][] {
+  return ltrSndPairs.filter(
+    (it) => it[1] === TonalSpellingTags.nasalFinalConsonant
+  );
+}
+
+export function getNasalization(
+  ltrSndPairs: [string, string][]
+): [string, string][] {
+  return ltrSndPairs.filter((it) => it[1] === TonalSpellingTags.nasalization);
+}
+
+export function getStopFinalConsonant(
+  ltrSndPairs: [string, string][]
+): [string, string][] {
+  return ltrSndPairs.filter(
+    (it) => it[1] === TonalSpellingTags.stopFinalConsonant
+  );
+}
+
+export function getTonal(ltrSndPairs: [string, string][]): [string, string][] {
+  return ltrSndPairs.filter(
+    (it) =>
+      it[1] === TonalSpellingTags.freeTone ||
+      it[1] === TonalSpellingTags.checkedTone
+  );
 }

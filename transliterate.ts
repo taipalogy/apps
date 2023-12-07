@@ -9,7 +9,7 @@ if (process.argv.length == 3) {
   }
 }
 
-interface dictType {
+interface SyllabaryType {
   [key: string]: string[];
 }
 
@@ -23,7 +23,7 @@ stdin.addListener('data', function (data) {
       console.log('File not found');
     } else {
       const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
-      const dict: dictType = JSON.parse(fileContents) || [];
+      const dict: SyllabaryType = JSON.parse(fileContents) || [];
       const keys = Object.keys(dict);
 
       const input = data.toString().trim();
