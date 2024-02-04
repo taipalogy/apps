@@ -6,7 +6,6 @@ import {
 } from '../taipa/src/tonal/tonalres';
 import { analyzeIntoSyllables } from '../taipa/src/util';
 import * as fs from 'fs';
-import { getSubSyllableMembers } from './utility';
 
 const tla = tonalLemmatizationAnalyzer;
 
@@ -69,16 +68,5 @@ stdin.addListener('data', function (data) {
     );
 
     console.log(result);
-
-    // in order for the following snippet to work,
-    // a customized syllabary is required
-    // const members = result.map((m) => getSubSyllableMembers(m, keys));
-    // console.log(members);
-
-    // console.info(
-    //   members.map((mem) =>
-    //     mem.map((val, ind) => (ind == 0 ? dict[val][0] : dict[val][1])).join('')
-    //   )
-    // );
   }
 });
