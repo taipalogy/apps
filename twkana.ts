@@ -20,9 +20,13 @@ if (process.argv.length == 3) {
 
 stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
+    console.time('analyzeIntoSequence');
     analyzeIntoSequence(data.toString()).forEach((v) => {
       console.info(v[0] + ' - ' + v[1]);
     });
+    // console.log('input>' + data.toString());
+    // console.timeLog('isInSyllableTable');
+    console.timeEnd('analyzeIntoSequence');
   } else if (process.argv.length == 3) {
     if (!fs.existsSync(process.argv[2])) {
       console.log('File not found');
