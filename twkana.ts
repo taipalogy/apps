@@ -114,36 +114,12 @@ stdin.addListener('data', function (data) {
                   pair[0] === TonalLetterTags.a ||
                   pair[0] === TonalLetterTags.i ||
                   pair[0] === TonalLetterTags.u ||
+                  pair[0] === TonalLetterTags.e ||
                   pair[0] === TonalLetterTags.o
                 ) {
-                  // in case of a, i, u, o
+                  // in case of a, i, u, e, o
                   // push kana
                   syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
-                } else if (pair[0] === TonalLetterTags.e) {
-                  // in case of e
-                  const fnl = arrPairs.filter(
-                    (it) =>
-                      (it[0] === TonalLetterTags.k ||
-                        it[0] === TonalLetterTags.kk) &&
-                      it[1] === TonalSpellingTags.stopFinalConsonant
-                  );
-                  if (fnl.length > 0) {
-                    // in case of ~ek
-                    // push pi, ti, ki, etc.
-                    if (pair[0].length == 1)
-                      syle.push(
-                        dict[arrPairs[idx - 1][0] + TonalLetterTags.i][0]
-                      );
-                    else
-                      syle.push(
-                        dict[arrPairs[idx - 1][0] + TonalLetterTags.i][1]
-                      );
-                    // syle.push(fldValue[1]); // push small kana e
-                  } else {
-                    // in case of e. not ~ek or ~ekk
-                    // push kana e
-                    syle.push(dict[arrPairs[idx - 1][0] + pair[0]][0]);
-                  }
                 } else if (
                   pair[0] === TonalLetterTags.ur ||
                   pair[0] === TonalLetterTags.er ||
@@ -165,8 +141,8 @@ stdin.addListener('data', function (data) {
                   // push one more kana
                   // because this letter is not one of a, i, u, e, o
                   syle.push(fldValue[1]); // push small kana
-                } else if (pair[0] === TonalLetterTags.ar) {
-                  // in case of ar
+                } else if (pair[0] === TonalLetterTags.ea) {
+                  // in case of ea
                 }
               } else if (
                 pair[1] === TonalSpellingTags.freeTone ||
@@ -215,16 +191,6 @@ stdin.addListener('data', function (data) {
                   }
                 } else if (mtrLctns.length > 0) {
                   syle.push(fldValue[0]);
-                } else if (
-                  init.length == 0 &&
-                  pair[0] === TonalLetterTags.e &&
-                  stpFnl.length > 0 &&
-                  (arrPairs[idx + 1][0] === TonalLetterTags.k ||
-                    arrPairs[idx + 1][0] === TonalLetterTags.kk)
-                ) {
-                  // in case of ek or ekk. no initial
-                  syle.push(dict[TonalLetterTags.i][0]); // push i
-                  // syle.push(dict[TonalLetterTags.e][1]); // push small e
                 } else {
                   syle.push(fldValue[0]);
                 }
