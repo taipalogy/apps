@@ -10,7 +10,7 @@ MIT
 
 If you don't have TypeScript installed, run the following command line to install TypeScript globally under your `~/.nvm`:
 
-`> npm install -g typescript`
+`npm install -g typescript`
 
 Run the following command line to install type definitions for node:
 
@@ -77,6 +77,16 @@ Enter Roman letters on your keyboard and get the bopomofo in return. Enter
 and get
 
 `ㄍㄚ`
+
+### transliterate from Hangul
+
+Run the following command to compile transliterate.ts to js:
+
+`tsc -m commonjs -t es2022 --outDir out transliterate.ts`
+
+Use the `fromHangul.json` file as a dictionary, you can transliterate Hangul:
+
+`node out/apps/transliterate.js ../dictionaries/fromHangul.json`
 
 ### twkana
 
