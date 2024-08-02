@@ -1,6 +1,5 @@
 import { Client, TokenAnalysis } from '../taipa/src/client';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
-import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
 import { TonalWord } from '../taipa/src/unchange/unit';
 import {
   analyzeIntoSequence,

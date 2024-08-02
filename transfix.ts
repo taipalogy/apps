@@ -1,4 +1,4 @@
-import { TonalUncombiningForms } from '../taipa/src/unchange/metaplasm';
+import { TonalStandaloneForms } from '../taipa/src/unchange/metaplasm';
 import { tonalLemmatizationAnalyzer } from '../taipa/src/unchange/analyzer';
 import {
   freeToneLettersTonal,
@@ -14,7 +14,7 @@ const stdin = process.openStdin();
 stdin.addListener('data', function (data) {
   if (process.argv.length == 2) {
     const transfix = tla
-      .morphAnalyze(data.toString().trim(), new TonalUncombiningForms([]))
+      .morphAnalyze(data.toString().trim(), new TonalStandaloneForms([]))
       .map((it) => it.sounds)
       .map((it) => {
         if (freeToneLettersTonal.includes(it[it.length - 1].toString())) {
@@ -23,7 +23,7 @@ stdin.addListener('data', function (data) {
       });
 
     const withoutTransfix = tla
-      .morphAnalyze(data.toString().trim(), new TonalUncombiningForms([]))
+      .morphAnalyze(data.toString().trim(), new TonalStandaloneForms([]))
       .map((it) => it.sounds)
       .map((it) => {
         if (
@@ -35,8 +35,8 @@ stdin.addListener('data', function (data) {
         return it.map((it) => it.toString()).join('');
       });
 
-    const uncombiningSeqs = tla
-      .morphAnalyze(data.toString().trim(), new TonalUncombiningForms([]))
+    const standaloneSeqs = tla
+      .morphAnalyze(data.toString().trim(), new TonalStandaloneForms([]))
       .map((it) =>
         it
           .getForms()
@@ -47,7 +47,7 @@ stdin.addListener('data', function (data) {
 
     console.info(transfix.join('-'));
     console.info(withoutTransfix.join('-'));
-    uncombiningSeqs.map((x) => console.info(x));
+    standaloneSeqs.map((x) => console.info(x));
   } else if (process.argv.length == 3) {
     const fileContents = fs.readFileSync(process.argv[2], 'utf-8');
     const dict: string[] = JSON.parse(fileContents) || [];
