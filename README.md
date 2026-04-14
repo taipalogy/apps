@@ -102,7 +102,7 @@ You can run the following command line to lauch the app:
 
 `node out/apps/twkana.js ../dictionaries/twkana.json`
 
-When you have an additional dictionary available, run then following command line to lauch the app:
+When you have an additional dictionary available, run the following command line to lauch the app:
 
 `node out/apps/twkana.js ../dictionaries/mix.json`
 

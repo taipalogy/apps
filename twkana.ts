@@ -125,9 +125,17 @@ stdin.addListener('data', function (data) {
                   pair[0] === TonalLetterTags.er ||
                   pair[0] === TonalLetterTags.or
                 ) {
+                  //console.info(">" + arrPairs[idx - 1][0] + ", " + TonalLetterTags.o);
                   // in case of ur, er, or
                   // use initial and vowel to get kana, push it
-                  syle.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
+                  if(arrPairs[idx - 1][0] === TonalLetterTags.j) {
+                    // In case of jer. Retrieve zo for consonant j.
+                    // For jer only, and only for jer.
+                    syle.push(dict[TonalLetterTags.z + TonalLetterTags.o][0])
+                  } else {
+                    // In case of syllables -er, excluding jer. 
+                    syle.push(dict[arrPairs[idx - 1][0] + TonalLetterTags.o][0]);
+                  }
                   // push one more kana
                   // because this letter is not one of a, i, u, e, o
                   syle.push(fldValue[1]); // push small kana
